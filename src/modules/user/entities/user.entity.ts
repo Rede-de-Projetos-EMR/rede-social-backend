@@ -9,7 +9,7 @@ export class User {
   country: string;
   bio:string;
   avatarUrl: string;
-  userName: string;
+  username: string;
   email: string;
   isActive: boolean;
   readonly createdAt: Date;
