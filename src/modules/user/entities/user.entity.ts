@@ -5,7 +5,7 @@ export class User {
   readonly id: string;
   firstName: string;
   lastName: string;
-  birthDate: Date;
+  birthDate: string;
   country: string;
   bio:string;
   avatarUrl: string;
