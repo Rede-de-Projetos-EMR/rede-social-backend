@@ -7,9 +7,14 @@ import { UserPrismaRepository } from "./repositories/prisma/prisma.repositorie";
 
 @Module({
   controllers: [UserController],
-  providers: [UserService, PrismaService, {
-    provide: UserRepository,
-    useClass: UserPrismaRepository
-  }]
+  providers: [
+    UserService,
+    PrismaService,
+    {
+      provide: UserRepository,
+      useClass: UserPrismaRepository,
+    },
+  ],
+  exports: [UserService],
 })
-export class UserModule { }
+export class UserModule {}
