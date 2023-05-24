@@ -47,6 +47,7 @@ export class CreateUserDto {
   @MinLength(8, { message: "'password' mínimo de 8 caracteres" })
   @MaxLength(60, { message: "'password' máximo de 60 caracteres" })
   @IsNotEmpty({ message: "O 'password' não pode ser vazio" })
+  @ApiProperty()
   @Transform(({ value }: { value: string }) => hashSync(value, 10), {
     groups: ["transform"]
   })
