@@ -1,6 +1,6 @@
 import { CreatePostDto } from "../dto/create-post.dto";
 import { UpdatePostDto } from "../dto/update-post.dto";
-import { Post } from "../entity/post.entity";
+import { Post } from "../entities/post.entity";
 
 export abstract class PostRepository {
   abstract create(data: CreatePostDto): Promise<Post>;
