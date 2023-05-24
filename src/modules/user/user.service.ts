@@ -26,6 +26,7 @@ export class UserService {
 
   async findAll() {
     return await this.usersRepository.findAll();
+  
   }
 
   async findOne(id: string) {
@@ -37,23 +38,35 @@ export class UserService {
 
     return user;
   }
-
+  
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const findEmail = await this.usersRepository.findEmail(updateUserDto.email);
-    const findUsername = await this.usersRepository.findUsername(updateUserDto.username);
-    let user = await this.usersRepository.findOne(id);
+    const user = await this.usersRepository.findOne(id);
 
-    if(findEmail){
-      throw new ConflictException("Email já existe");
+    if(!user){
+      throw new NotFoundException("Usuário não encontrado");
     }
 
-    if(findUsername){
-      throw new ConflictException("Username já existe");
+    if(updateUserDto.email){
+      const findEmail = await this.usersRepository.findEmail(updateUserDto.email);
+
+      if(findEmail){
+        throw new ConflictException("Email já existe");
+      }
+      
     }
 
-    user = await this.usersRepository.update(id, updateUserDto);
+    if(updateUserDto.username){
+      const findUsername = await this.usersRepository.findUsername(updateUserDto.username);
 
-    return user;
+      if(findUsername){
+        throw new ConflictException("Username já existe");
+      }
+
+    }
+
+    const updateUser = await this.usersRepository.update(id, updateUserDto);
+
+    return updateUser;
   }
 
   async remove(id: string) {

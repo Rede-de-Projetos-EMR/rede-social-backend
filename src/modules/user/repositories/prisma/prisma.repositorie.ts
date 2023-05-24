@@ -23,14 +23,27 @@ export class UserPrismaRepository implements UserRepository {
   }
 
   async findAll(): Promise<User[]> {
-    const users = await this.prisma.user.findMany();
+    const users = await this.prisma.user.findMany({
+      include:{
+        followers: true,
+        followings: true,
+        posts: true,
+        reactions: true
+      }
+    });
 
     return plainToInstance(User, users);
   }
 
   async findOne(id: string): Promise<User> {
-    const user = await this.prisma.user.findUniqueOrThrow({
-      where: { id }
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      include:{
+        followers: true,
+        followings: true,
+        posts: true,
+        reactions: true
+      }
     });
     return plainToInstance(User, user);
   }
