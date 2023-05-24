@@ -8,15 +8,15 @@ import { plainToInstance } from "class-transformer";
 
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(data: CreateUserDto): Promise<User> {
     const user = new User();
     Object.assign(user, {
-      ...data
+      ...data,
     });
     const newUser = await this.prisma.user.create({
-      data: { ...user }
+      data: { ...user },
     });
 
     return plainToInstance(User, newUser);
@@ -24,12 +24,12 @@ export class UserPrismaRepository implements UserRepository {
 
   async findAll(): Promise<User[]> {
     const users = await this.prisma.user.findMany({
-      include:{
+      include: {
         followers: true,
         followings: true,
         posts: true,
-        reactions: true
-      }
+        reactions: true,
+      },
     });
 
     return plainToInstance(User, users);
@@ -38,12 +38,12 @@ export class UserPrismaRepository implements UserRepository {
   async findOne(id: string): Promise<User> {
     const user = await this.prisma.user.findUnique({
       where: { id },
-      include:{
+      include: {
         followers: true,
         followings: true,
         posts: true,
-        reactions: true
-      }
+        reactions: true,
+      },
     });
     return plainToInstance(User, user);
   }
@@ -52,8 +52,8 @@ export class UserPrismaRepository implements UserRepository {
     const user = await this.prisma.user.update({
       where: { id },
       data: {
-        ...data
-      }
+        ...data,
+      },
     });
 
     return plainToInstance(User, user);
@@ -61,20 +61,21 @@ export class UserPrismaRepository implements UserRepository {
 
   async remove(id: string): Promise<void> {
     await this.prisma.user.delete({
-      where: { id }
+      where: { id },
     });
   }
 
   async findEmail(email: string): Promise<User> {
     const userEmail = await this.prisma.user.findUnique({
-      where: { email }
+      where: { email },
     });
-    return plainToInstance(User, userEmail);
+
+    return userEmail;
   }
 
   async findUsername(username: string): Promise<User> {
     const userUsername = await this.prisma.user.findUnique({
-      where: { username }
+      where: { username },
     });
     return plainToInstance(User, userUsername);
   }

@@ -7,7 +7,7 @@ import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class PostPrismaRepository implements PostRepository {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(data: CreatePostDto): Promise<Post> {
     const post = new Post();
@@ -16,8 +16,8 @@ export class PostPrismaRepository implements PostRepository {
     const newPost = await this.prisma.post.create({
       data: {
         ...data,
-        userId: "b88ff355-7614-4ebc-8264-941af50924f8"
-      }
+        userId: "1afbc1be-4ba9-4d27-97a6-3c73cfee2619",
+      },
     });
 
     return newPost;
@@ -34,9 +34,9 @@ export class PostPrismaRepository implements PostRepository {
           select: {
             username: true,
             avatarUrl: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
 
     return posts;
@@ -44,7 +44,7 @@ export class PostPrismaRepository implements PostRepository {
   async findOne(id: string): Promise<any> {
     const posts = await this.prisma.post.findUnique({
       where: {
-        id
+        id,
       },
       select: {
         id: true,
@@ -56,9 +56,9 @@ export class PostPrismaRepository implements PostRepository {
           select: {
             username: true,
             avatarUrl: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
 
     return posts;
@@ -67,8 +67,8 @@ export class PostPrismaRepository implements PostRepository {
     const post = await this.prisma.post.findFirst({
       where: {
         userId: id,
-        title
-      }
+        title,
+      },
     });
 
     return post;
@@ -76,9 +76,9 @@ export class PostPrismaRepository implements PostRepository {
   async update(id: string, data: UpdatePostDto): Promise<Post> {
     const updatedPost = await this.prisma.post.update({
       where: {
-        id
+        id,
       },
-      data
+      data,
     });
 
     return updatedPost;
@@ -86,8 +86,8 @@ export class PostPrismaRepository implements PostRepository {
   async remove(id: string): Promise<void> {
     await this.prisma.post.delete({
       where: {
-        id
-      }
+        id,
+      },
     });
 
     return;

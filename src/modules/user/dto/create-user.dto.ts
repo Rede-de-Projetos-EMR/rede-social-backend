@@ -49,7 +49,7 @@ export class CreateUserDto {
   @IsNotEmpty({ message: "O 'password' não pode ser vazio" })
   @ApiProperty()
   @Transform(({ value }: { value: string }) => hashSync(value, 10), {
-    groups: ["transform"]
+    groups: ["transform"],
   })
   password: string;
 }
