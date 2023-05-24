@@ -42,6 +42,12 @@ export class PostService {
       throw new NotFoundException("Não foi possível encontrar um post com esse id");
     }
 
+    const userPost = await this.postRepository.findByTitle("b88ff355-7614-4ebc-8264-941af50924f8", updatePostDto.title);
+
+    if (userPost) {
+      throw new ConflictException("Você já criou um post com esse título");
+    }
+
     const updatedPost = await this.postRepository.update(id, updatePostDto);
 
     return updatedPost;
