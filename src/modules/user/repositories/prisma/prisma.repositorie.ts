@@ -8,7 +8,7 @@ import { plainToInstance } from "class-transformer";
 
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(data: CreateUserDto): Promise<User> {
     const user = new User();
@@ -21,7 +21,7 @@ export class UserPrismaRepository implements UserRepository {
 
     return plainToInstance(User, newUser);
   }
-  
+
   async findAll(): Promise<User[]> {
     const users = await this.prisma.user.findMany();
 
@@ -54,15 +54,15 @@ export class UserPrismaRepository implements UserRepository {
 
   async findEmail(email: string): Promise<User> {
     const userEmail = await this.prisma.user.findUnique({
-      where: {email}
+      where: { email }
     });
     return plainToInstance(User, userEmail);
   }
 
   async findUsername(username: string): Promise<User> {
     const userUsername = await this.prisma.user.findUnique({
-      where: {username}
+      where: { username }
     });
-    return plainToInstance(User, userUsername); 
+    return plainToInstance(User, userUsername);
   }
 }

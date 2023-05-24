@@ -14,7 +14,10 @@ export class PostPrismaRepository implements PostRepository {
     Object.assign(post, { ...data });
 
     const newPost = await this.prisma.post.create({
-      data
+      data: {
+        ...data,
+        userId: "b88ff355-7614-4ebc-8264-941af50924f8"
+      }
     });
 
     return newPost;
@@ -22,6 +25,11 @@ export class PostPrismaRepository implements PostRepository {
   async findAll(): Promise<any[]> {
     const posts = await this.prisma.post.findMany({
       select: {
+        id: true,
+        title: true,
+        content: true,
+        createdAt: true,
+        updatedAt: true,
         User: {
           select: {
             username: true,
@@ -39,6 +47,11 @@ export class PostPrismaRepository implements PostRepository {
         id
       },
       select: {
+        id: true,
+        title: true,
+        content: true,
+        createdAt: true,
+        updatedAt: true,
         User: {
           select: {
             username: true,

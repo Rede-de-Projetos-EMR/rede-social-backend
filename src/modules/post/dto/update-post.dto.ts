@@ -5,13 +5,13 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class UpdatePostDto extends PartialType(CreatePostDto) {
   @ApiProperty()
-  @IsString({ message: "O título precisa ser uma string" })
-  @IsNotEmpty({ message: "O título não pode ser vazio" })
+  @IsString({ message: "O 'title' deve ser uma String" })
+  @IsNotEmpty({ message: "O 'title' não pode ser vazio" })
   @MinLength(2, { message: "Insira pelo menos uma palavra" })
   title: string;
 
   @ApiProperty()
-  @IsString({ message: "O conteúdo precisa ser uma string" })
-  @IsNotEmpty({ message: "O conteúdo não pode ser vazio" })
+  @IsString({ message: "O 'content' deve ser uma String" })
+  @IsNotEmpty({ message: "O 'content' não pode ser vazio" })
   content: string;
 }

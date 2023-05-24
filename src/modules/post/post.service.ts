@@ -8,7 +8,7 @@ export class PostService {
   constructor(private postRepository: PostRepository) { }
 
   async create(createPostDto: CreatePostDto) {
-    const findPost = await this.postRepository.findByTitle(createPostDto.userId, createPostDto.title);
+    const findPost = await this.postRepository.findByTitle("b88ff355-7614-4ebc-8264-941af50924f8", createPostDto.title);
 
     if (findPost) {
       throw new ConflictException("Você já criou um post com esse título");
