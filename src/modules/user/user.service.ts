@@ -6,7 +6,6 @@ import {
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UserRepository } from "./repositories/user.repositorie";
-import { JwtStrategy } from "../auth/jwt.strategy";
 
 @Injectable()
 export class UserService {
