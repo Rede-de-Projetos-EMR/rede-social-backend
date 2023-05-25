@@ -7,7 +7,7 @@ import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class PostPrismaRepository implements PostRepository {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(userId: string, data: CreatePostDto): Promise<Post> {
     const post = new Post();
@@ -15,8 +15,8 @@ export class PostPrismaRepository implements PostRepository {
 
     const newPost = await this.prisma.post.create({
       data: {
-        ...data,
-        userId
+        ...post,
+        userId,
       },
     });
 
