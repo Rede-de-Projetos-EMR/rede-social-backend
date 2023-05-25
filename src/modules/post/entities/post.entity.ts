@@ -14,9 +14,6 @@ export class Post {
   @ApiProperty()
   readonly createdAt: Date;
 
-  @ApiProperty()
-  readonly updatedAt: Date;
-
   constructor() {
     this.id = randomUUID();
   }

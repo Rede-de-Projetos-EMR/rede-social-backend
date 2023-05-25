@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   UseGuards,
+  Headers,
 } from "@nestjs/common";
 import { Post as PostEntity } from "./entities/post.entity";
 import { PostService } from "./post.service";
@@ -21,18 +22,19 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { IHeadersUser } from "src/interfaces/headersUser";
 
 @Controller("post")
 @ApiTags("Posts")
 export class PostController {
-  constructor(private readonly postService: PostService) {}
+  constructor(private readonly postService: PostService) { }
 
   @Post()
   @ApiOperation({ summary: "Criação de um post" })
   @ApiCreatedResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
-  create(@Body() createPostDto: CreatePostDto) {
-    return this.postService.create(createPostDto);
+  create(@Body() createPostDto: CreatePostDto, @Headers() user: IHeadersUser) {
+    return this.postService.create(createPostDto, user.authorization?.split(" ")[1]);
   }
 
   @Get()

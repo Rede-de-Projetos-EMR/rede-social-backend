@@ -7,16 +7,16 @@ import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class PostPrismaRepository implements PostRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
-  async create(data: CreatePostDto): Promise<Post> {
+  async create(userId: string, data: CreatePostDto): Promise<Post> {
     const post = new Post();
     Object.assign(post, { ...data });
 
     const newPost = await this.prisma.post.create({
       data: {
         ...data,
-        userId: "1afbc1be-4ba9-4d27-97a6-3c73cfee2619",
+        userId
       },
     });
 
@@ -32,6 +32,7 @@ export class PostPrismaRepository implements PostRepository {
         updatedAt: true,
         User: {
           select: {
+            id: true,
             username: true,
             avatarUrl: true,
           },
@@ -54,6 +55,7 @@ export class PostPrismaRepository implements PostRepository {
         updatedAt: true,
         User: {
           select: {
+            id: true,
             username: true,
             avatarUrl: true,
           },

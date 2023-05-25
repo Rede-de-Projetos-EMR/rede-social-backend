@@ -1,7 +1,6 @@
 import {
   ConflictException,
   Injectable,
-  NotFoundException,
 } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -9,7 +8,7 @@ import { UserRepository } from "./repositories/user.repositorie";
 
 @Injectable()
 export class UserService {
-  constructor(private usersRepository: UserRepository) {}
+  constructor(private usersRepository: UserRepository) { }
 
   async create(createUserDto: CreateUserDto) {
     const findEmail = await this.usersRepository.findEmail(createUserDto.email);
@@ -37,20 +36,10 @@ export class UserService {
   async findOne(id: string) {
     const user = await this.usersRepository.findOne(id);
 
-    if (!user) {
-      throw new NotFoundException("Usuário não encontrado");
-    }
-
     return user;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await this.usersRepository.findOne(id);
-
-    if (!user) {
-      throw new NotFoundException("Usuário não encontrado");
-    }
-
     if (updateUserDto.email) {
       const findEmail = await this.usersRepository.findEmail(
         updateUserDto.email,
@@ -77,12 +66,6 @@ export class UserService {
   }
 
   async remove(id: string) {
-    const findUser = await this.usersRepository.findOne(id);
-
-    if (!findUser) {
-      throw new NotFoundException("Usuário não encontrado");
-    }
-
     return this.usersRepository.remove(id);
   }
 
@@ -90,10 +73,5 @@ export class UserService {
     const user = await this.usersRepository.findEmail(email);
 
     return user;
-  }
-
-  async teste(authorization){
-    const token = authorization.split(" ")[1];
-    return token;
   }
 }
