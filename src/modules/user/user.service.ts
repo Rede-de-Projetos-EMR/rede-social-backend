@@ -91,4 +91,9 @@ export class UserService {
 
     return user;
   }
+
+  async teste(authorization){
+    const token = authorization.split(" ")[1];
+    return token;
+  }
 }
