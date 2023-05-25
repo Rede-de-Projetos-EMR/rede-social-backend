@@ -19,7 +19,7 @@ export class UserService extends JwtStrategy {
     const findUsername = await this.usersRepository.findUsername(
       createUserDto.username,
     );
-    await this.jwtService.decode();
+
     if (findEmail) {
       throw new ConflictException("Email já existe");
     }
@@ -93,5 +93,10 @@ export class UserService extends JwtStrategy {
     const user = await this.usersRepository.findEmail(email);
 
     return user;
+  }
+
+  async teste(authorization){
+    const token = authorization.split(" ")[1];
+    return token;
   }
 }
