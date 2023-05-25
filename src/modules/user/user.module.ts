@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule, Req, RequestMethod } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { UserController } from "./user.controller";
 import { PrismaService } from "src/prisma/prisma.service";
@@ -20,6 +20,6 @@ import { VerifyIdPermission } from "src/middlewares/common/verifyIdPermission";
 })
 export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(VerifyIdPermission).forRoutes({path: "user/*", method: RequestMethod.ALL});
+    consumer.apply(VerifyIdPermission).exclude({path: "user/*", method: RequestMethod.GET}).forRoutes({path: "user/*", method: RequestMethod.ALL});
   }
 }
