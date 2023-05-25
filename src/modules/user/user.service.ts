@@ -9,10 +9,8 @@ import { UserRepository } from "./repositories/user.repositorie";
 import { JwtStrategy } from "../auth/jwt.strategy";
 
 @Injectable()
-export class UserService extends JwtStrategy {
-  constructor(private usersRepository: UserRepository) {
-    super();
-  }
+export class UserService {
+  constructor(private usersRepository: UserRepository) {}
 
   async create(createUserDto: CreateUserDto) {
     const findEmail = await this.usersRepository.findEmail(createUserDto.email);
