@@ -6,17 +6,20 @@ import {
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UserRepository } from "./repositories/user.repositorie";
+import { JwtStrategy } from "../auth/jwt.strategy";
 
 @Injectable()
-export class UserService {
-  constructor(private usersRepository: UserRepository) {}
+export class UserService extends JwtStrategy {
+  constructor(private usersRepository: UserRepository) {
+    super();
+  }
 
   async create(createUserDto: CreateUserDto) {
     const findEmail = await this.usersRepository.findEmail(createUserDto.email);
     const findUsername = await this.usersRepository.findUsername(
       createUserDto.username,
     );
-
+    await this.jwtService.decode();
     if (findEmail) {
       throw new ConflictException("Email já existe");
     }
