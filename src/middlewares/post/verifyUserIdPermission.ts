@@ -2,10 +2,13 @@ import { ConflictException, Injectable, NestMiddleware } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
 import { IDataDecode } from "src/interfaces/decode";
 import jwt_decode from "jwt-decode";
+import { PostRepository } from "src/modules/post/repositories/post.repository";
 
 @Injectable()
-export class VerifyIdPermission implements NestMiddleware {
-  use(req: Request, res: Response, next: NextFunction) {
+export class VerifyUserIdPermission implements NestMiddleware {
+  constructor(private postRepository: PostRepository) { }
+
+  async use(req: Request, res: Response, next: NextFunction) {
     const token = req.headers.authorization?.split(" ")[1];
 
     if (!token) {
@@ -14,7 +17,9 @@ export class VerifyIdPermission implements NestMiddleware {
 
     const decode: IDataDecode = jwt_decode(token);
 
-    if (decode.sub != req.params["0"]) {
+    const findPost = await this.postRepository.findOne(req.params["0"]);
+
+    if (decode.sub != findPost.User.id) {
       throw new ConflictException("Você não pode acessar esses dados");
     }
 
