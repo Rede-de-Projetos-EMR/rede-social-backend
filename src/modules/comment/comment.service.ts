@@ -31,9 +31,9 @@ export class CommentService {
   }
 
   async update(id: string, updateCommentDto: UpdateCommentDto) {
-    const updatePost = await this.commentRepository.update(id, updateCommentDto);
+    const updateComment = await this.commentRepository.update(id, updateCommentDto);
 
-    return updatePost;
+    return updateComment;
   }
 
   async remove(id: string) {
