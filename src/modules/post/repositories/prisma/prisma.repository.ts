@@ -30,6 +30,8 @@ export class PostPrismaRepository implements PostRepository {
         content: true,
         createdAt: true,
         updatedAt: true,
+        comments: true,
+        reactions: true,
         User: {
           select: {
             id: true,
@@ -53,6 +55,8 @@ export class PostPrismaRepository implements PostRepository {
         content: true,
         createdAt: true,
         updatedAt: true,
+        comments: true,
+        reactions: true,
         User: {
           select: {
             id: true,
@@ -71,6 +75,10 @@ export class PostPrismaRepository implements PostRepository {
         userId: id,
         title,
       },
+      include: {
+        comments: true,
+        reactions: true,
+      }
     });
 
     return post;

@@ -29,6 +29,7 @@ export class UserPrismaRepository implements UserRepository {
         followings: true,
         posts: true,
         reactions: true,
+        comments: true
       },
     });
 
@@ -43,6 +44,7 @@ export class UserPrismaRepository implements UserRepository {
         followings: true,
         posts: true,
         reactions: true,
+        comments: true
       },
     });
     return plainToInstance(User, user);
