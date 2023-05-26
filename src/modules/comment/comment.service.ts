@@ -1,27 +1,42 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateCommentDto } from "./dto/create-comment.dto";
 import { UpdateCommentDto } from "./dto/update-comment.dto";
+import { CommentRepository } from "./repositories/comment.repository";
+import { tokenToId } from "src/utils/tokenToId";
 
 @Injectable()
 export class CommentService {
-  // constructor(private commentRepository: )
-  create(createCommentDto: CreateCommentDto, userToken) {
-    
+  constructor(private commentRepository: CommentRepository) {}
+
+  async create(createCommentDto: CreateCommentDto, userToken: string) {
+    const decode: string = tokenToId(userToken);
+
+    const newComment = await this.commentRepository.create(decode, createCommentDto);
+
+    return newComment;
   }
 
-  findAll() {
-    return "This action returns all comment";
+  async findAll() {
+    return await this.commentRepository.findAll();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} comment`;
+  async findOne(id: string) {
+    const findComment = await this.commentRepository.findOne(id);
+
+    if(!findComment){
+      throw new NotFoundException("Comentário não encontrado!");
+    }
+
+    return findComment;
   }
 
-  update(id: string, updateCommentDto: UpdateCommentDto) {
-    return `This action updates a #${id} comment`;
+  async update(id: string, updateCommentDto: UpdateCommentDto) {
+    const updatePost = await this.commentRepository.update(id, updateCommentDto);
+
+    return updatePost;
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} comment`;
+  async remove(id: string) {
+    return await this.commentRepository.remove(id);
   }
 }
