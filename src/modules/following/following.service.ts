@@ -5,16 +5,14 @@ import {
 } from "@nestjs/common";
 import { CreateFollowingDto } from "./dto/create-following.dto";
 import { FollowingRepository } from "./repositories/following.repository";
-import jwt_decode from "jwt-decode";
-import { IDataDecode } from "src/interfaces/decode";
+import { tokenToId } from "src/utils/tokenToId";
 
 @Injectable()
 export class FollowingService {
   constructor(private followingRepository: FollowingRepository) {}
 
   async create(createFollowingDto: CreateFollowingDto, token: string) {
-    const decode: IDataDecode = jwt_decode(token);
-    const followerId = decode.sub;
+    const followerId = tokenToId(token);
 
     const follow = await this.followingRepository.findFollow(
       createFollowingDto.followingId,
@@ -34,8 +32,7 @@ export class FollowingService {
   }
 
   async findAllFollowers(token: string) {
-    const decode: IDataDecode = jwt_decode(token);
-    const userId = decode.sub;
+    const userId = tokenToId(token);
 
     const followers = await this.followingRepository.findAllFollowers(userId);
 
@@ -43,8 +40,7 @@ export class FollowingService {
   }
 
   async findAllFollowings(token: string) {
-    const decode: IDataDecode = jwt_decode(token);
-    const userId = decode.sub;
+    const userId = tokenToId(token);
 
     const followings = await this.followingRepository.findAllFollowings(userId);
 

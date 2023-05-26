@@ -2,17 +2,16 @@ import { Injectable } from "@nestjs/common";
 import { CreatePostDto } from "./dto/create-post.dto";
 import { UpdatePostDto } from "./dto/update-post.dto";
 import { PostRepository } from "./repositories/post.repository";
-import jwt_decode from "jwt-decode";
-import { IDataDecode } from "src/interfaces/decode";
+import { tokenToId } from "src/utils/tokenToId";
 
 @Injectable()
 export class PostService {
   constructor(private postRepository: PostRepository) { }
 
   async create(createPostDto: CreatePostDto, userToken: string) {
-    const decode: IDataDecode = jwt_decode(userToken);
+    const decode: string = tokenToId(userToken);
 
-    const newPost = await this.postRepository.create(decode.sub, createPostDto);
+    const newPost = await this.postRepository.create(decode, createPostDto);
 
     return newPost;
   }

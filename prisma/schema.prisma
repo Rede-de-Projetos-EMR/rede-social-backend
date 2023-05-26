@@ -28,6 +28,7 @@ model User {
   reactions  Reaction[]
   followings Following[] @relation("Followings")
   followers  Following[] @relation("Followers")
+  comments   Comment[]
 }
 
 model Following {
@@ -48,6 +49,7 @@ model Post {
   User      User?      @relation(fields: [userId], references: [id])
   userId    String?
   reactions Reaction[]
+  comments  Comment[]
 }
 
 model Reaction {
@@ -57,4 +59,15 @@ model Reaction {
   userId  String?
   Posts   Post?   @relation(fields: [postsId], references: [id])
   postsId String?
+}
+
+model Comment {
+  id        String   @unique @default(uuid())
+  content   String
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  Posts     Post?    @relation(fields: [postsId], references: [id])
+  postsId   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
