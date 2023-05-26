@@ -8,10 +8,10 @@ import { tokenToId } from "src/utils/tokenToId";
 export class CommentService {
   constructor(private commentRepository: CommentRepository) {}
 
-  async create(createCommentDto: CreateCommentDto, userToken: string) {
+  async create(createCommentDto: CreateCommentDto, userToken: string, postId: string) {
     const decode: string = tokenToId(userToken);
 
-    const newComment = await this.commentRepository.create(decode, createCommentDto);
+    const newComment = await this.commentRepository.create(decode, createCommentDto, postId);
 
     return newComment;
   }

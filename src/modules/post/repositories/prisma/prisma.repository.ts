@@ -30,8 +30,22 @@ export class PostPrismaRepository implements PostRepository {
         content: true,
         createdAt: true,
         updatedAt: true,
-        comments: true,
         reactions: true,
+        comments: {
+          select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            updatedAt: true,
+            User: {
+              select: {
+                id: true,
+                username: true,
+                avatarUrl: true,
+              }
+            } 
+          }
+        },
         User: {
           select: {
             id: true,

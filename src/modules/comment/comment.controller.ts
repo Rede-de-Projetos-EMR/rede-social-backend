@@ -9,10 +9,10 @@ import { IHeadersUser } from "src/interfaces/headersUser";
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
-  @Post()
+  @Post(":id")
   @UseGuards(JwtAuthGuard)
-  create(@Body() createCommentDto: CreateCommentDto, @Headers() user: IHeadersUser) {
-    return this.commentService.create(createCommentDto, user.authorization?.split(" ")[1]);
+  create(@Body() createCommentDto: CreateCommentDto, @Headers() user: IHeadersUser, @Param("id")  postId: string) {
+    return this.commentService.create(createCommentDto, user.authorization?.split(" ")[1], postId);
   }
 
   @Get()
