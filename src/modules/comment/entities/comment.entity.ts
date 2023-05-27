@@ -15,10 +15,10 @@ export class Comment {
   readonly updatedAt: Date;
 
   @ApiProperty()
-  userId: string;
+  readonly userId: string;
 
   @ApiProperty()
-  postsId: string;
+  readonly postId: string;
 
   constructor() {
     this.id = randomUUID();

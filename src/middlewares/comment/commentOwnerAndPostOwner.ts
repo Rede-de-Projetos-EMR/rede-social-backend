@@ -4,7 +4,7 @@ import { CommentRepository } from "src/modules/comment/repositories/comment.repo
 import { tokenToId } from "src/utils/tokenToId";
 
 @Injectable()
-export class CommentOwner implements NestMiddleware {
+export class CommentOwnerAndPostOwner implements NestMiddleware {
   constructor(private commentRepository: CommentRepository) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
@@ -22,7 +22,7 @@ export class CommentOwner implements NestMiddleware {
       return next();
     }
 
-    if(decode != findComment.userId){
+    if(decode != findComment.userId && decode != findComment.Posts.userId){
       throw new NotAcceptableException("Você não tem permissão");
     }
 
