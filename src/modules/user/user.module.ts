@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from "@nestjs/common";
 import { UserService } from "./user.service";
 import { UserController } from "./user.controller";
 import { PrismaService } from "src/prisma/prisma.service";
@@ -6,6 +11,7 @@ import { UserRepository } from "./repositories/user.repositorie";
 import { UserPrismaRepository } from "./repositories/prisma/prisma.repositorie";
 import { VerifyIdPermission } from "src/middlewares/common/verifyIdPermission";
 import { VerifyUserExists } from "src/middlewares/common/verifyUserExists";
+import { VerifyUniqueUserData } from "src/middlewares/user/verifyUniqueUserData";
 
 @Module({
   controllers: [UserController],
@@ -22,11 +28,15 @@ import { VerifyUserExists } from "src/middlewares/common/verifyUserExists";
 export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
+      .apply(VerifyUniqueUserData)
+      .forRoutes(
+        { path: "user", method: RequestMethod.POST },
+        { path: "user/*", method: RequestMethod.PATCH },
+      );
+    consumer
       .apply(VerifyUserExists)
       .exclude({ path: "user/*", method: RequestMethod.GET })
       .forRoutes("user/*");
-    consumer
-      .apply(VerifyIdPermission)
-      .forRoutes("/user/*");
+    consumer.apply(VerifyIdPermission).forRoutes("/user/*");
   }
 }
