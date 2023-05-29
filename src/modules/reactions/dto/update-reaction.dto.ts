@@ -1,16 +1,11 @@
 import { ApiProperty, PartialType } from "@nestjs/swagger";
 import { CreateReactionDto } from "./create-reaction.dto";
-import { IsString, IsNotEmpty, IsUUID } from "class-validator";
-import { ReactionTypes } from "../enum/type.enum";
+import { IsEnum, IsNotEmpty } from "class-validator";
+import { ReactionTypes } from "../enum/reactions.enum";
 
 export class UpdateReactionDto extends PartialType(CreateReactionDto) {
   @ApiProperty()
-  @IsString({ message: "O 'type' deve ser uma String" })
   @IsNotEmpty({ message: "O 'type' não pode ser vazio" })
+  @IsEnum(ReactionTypes)
   type: ReactionTypes;
-
-  @ApiProperty()
-  @IsNotEmpty({ message: "O 'postId' não pode ser vazio" })
-  @IsUUID()
-  postId: string;
 }

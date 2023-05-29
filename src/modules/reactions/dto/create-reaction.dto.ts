@@ -1,15 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { ReactionTypes } from "../enum/type.enum";
-import { IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { ReactionTypes } from "../enum/reactions.enum";
 
 export class CreateReactionDto {
   @ApiProperty()
   @IsString({ message: "O 'type' deve ser uma String" })
   @IsNotEmpty({ message: "O 'type' não pode ser vazio" })
+  @IsEnum(ReactionTypes)
   type: ReactionTypes;
-
-  @ApiProperty()
-  @IsNotEmpty({ message: "O 'postId' não pode ser vazio" })
-  @IsUUID()
-  postId: string;
 }

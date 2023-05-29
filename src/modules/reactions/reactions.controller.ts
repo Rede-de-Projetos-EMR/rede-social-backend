@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Headers } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Headers, HttpCode } from "@nestjs/common";
 import { ReactionsService } from "./reactions.service";
 import { CreateReactionDto } from "./dto/create-reaction.dto";
 import { UpdateReactionDto } from "./dto/update-reaction.dto";
@@ -12,7 +12,7 @@ export class ReactionsController {
   @Post(":id")
   @UseGuards(JwtAuthGuard)
   create(@Param("id") id: string, @Headers() user: IHeadersUser, @Body() createReactionDto: CreateReactionDto) {
-    return this.reactionsService.create(id, user.authorization?.split(" ")[1], createReactionDto);
+    return this.reactionsService.create(user.authorization?.split(" ")[1], id, createReactionDto);
   }
 
   @Get(":id")
@@ -27,6 +27,7 @@ export class ReactionsController {
     return this.reactionsService.update(id, updateReactionDto);
   }
 
+  @HttpCode(204)
   @Delete(":id")
   @UseGuards(JwtAuthGuard)
   remove(@Param("id") id: string) {

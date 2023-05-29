@@ -3,25 +3,28 @@ import { CreateReactionDto } from "../../dto/create-reaction.dto";
 import { UpdateReactionDto } from "../../dto/update-reaction.dto";
 import { Reaction } from "../../entities/reaction.entity";
 import { ReactionsRepository } from "../reactions.repository";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class ReactionsPrismaRepository implements ReactionsRepository {
   constructor(private prisma: PrismaService) { }
 
-  async create(postId: string, data: CreateReactionDto): Promise<Reaction> {
+  async create(postId: string, userId: string, data: CreateReactionDto): Promise<any> {
     const reaction = new Reaction();
     Object.assign(reaction, { ...data });
 
     const newReaction = await this.prisma.reaction.create({
       data: {
         ...reaction,
-        postId
+        postId,
+        userId
       }
     });
 
     return newReaction;
   }
 
-  async findByPostId(postId: string): Promise<Reaction[]> {
+  async findByPostId(postId: string): Promise<any[]> {
     const findReactions = await this.prisma.reaction.findMany({
       where: {
         postId
@@ -31,7 +34,7 @@ export class ReactionsPrismaRepository implements ReactionsRepository {
     return findReactions;
   }
 
-  async findOne(userId: string, postId: string): Promise<Reaction> {
+  async findOne(userId: string, postId: string): Promise<any> {
     const findReaction = await this.prisma.reaction.findFirst({
       where: {
         userId,
@@ -42,7 +45,7 @@ export class ReactionsPrismaRepository implements ReactionsRepository {
     return findReaction;
   }
 
-  async findByReactionId(reactionId: string): Promise<Reaction> {
+  async findByReactionId(reactionId: string): Promise<any> {
     const findReaction = await this.prisma.reaction.findUnique({
       where: {
         id: reactionId
@@ -52,7 +55,7 @@ export class ReactionsPrismaRepository implements ReactionsRepository {
     return findReaction;
   }
 
-  async update(reactionId: string, data: UpdateReactionDto): Promise<Reaction> {
+  async update(reactionId: string, data: UpdateReactionDto): Promise<any> {
     const updateReaction = await this.prisma.reaction.update({
       where: {
         id: reactionId,

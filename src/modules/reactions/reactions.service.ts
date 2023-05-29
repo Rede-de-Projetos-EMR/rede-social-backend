@@ -2,19 +2,22 @@ import { ConflictException, Injectable, NotFoundException } from "@nestjs/common
 import { CreateReactionDto } from "./dto/create-reaction.dto";
 import { UpdateReactionDto } from "./dto/update-reaction.dto";
 import { ReactionsRepository } from "./repositories/reactions.repository";
+import { tokenToId } from "src/utils/tokenToId";
 
 @Injectable()
 export class ReactionsService {
   constructor(private reactionsRepository: ReactionsRepository) { }
 
-  async create(userId: string, postId: string, createReactionDto: CreateReactionDto) {
-    const findReaction = await this.reactionsRepository.findOne(userId, createReactionDto.postId);
+  async create(userToken: string, postId: string, createReactionDto: CreateReactionDto) {
+    const userId: string = tokenToId(userToken);
+
+    const findReaction = await this.reactionsRepository.findOne(userId, postId);
 
     if (findReaction) {
       throw new ConflictException("Você já reagiu esse post");
     }
 
-    const createdReaction = await this.reactionsRepository.create(postId, createReactionDto);
+    const createdReaction = await this.reactionsRepository.create(postId, userId, createReactionDto);
 
     return createdReaction;
   }

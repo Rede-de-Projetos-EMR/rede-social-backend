@@ -5,18 +5,18 @@ import { CreateCommentDto } from "../../dto/create-comment.dto";
 import { Comment } from "../../entities/comment.entity";
 
 @Injectable()
-export class CommentPrismaRepository implements CommentRepository{
-  constructor(private prisma: PrismaService) {}
-  
+export class CommentPrismaRepository implements CommentRepository {
+  constructor(private prisma: PrismaService) { }
+
   async create(userId: string, data: CreateCommentDto, postId: string): Promise<Comment> {
     const comment = new Comment();
-    Object.assign(comment, {...data});
+    Object.assign(comment, { ...data });
 
     const newComment = await this.prisma.comment.create({
-      data:  {
+      data: {
         ...comment,
         userId,
-        postId: postId,
+        postId,
       }
     });
 
@@ -27,18 +27,18 @@ export class CommentPrismaRepository implements CommentRepository{
   }
   async findOne(id: string): Promise<any> {
     const comment = await this.prisma.comment.findUnique({
-      where: { 
+      where: {
         id,
       },
-      select:{
+      select: {
         content: true,
         createdAt: true,
         id: true,
         postId: true,
         updatedAt: true,
         userId: true,
-        Posts: {
-          select:{
+        Post: {
+          select: {
             id: true,
             userId: true,
           }
