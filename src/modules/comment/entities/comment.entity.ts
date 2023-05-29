@@ -14,6 +14,12 @@ export class Comment {
   @ApiProperty()
   readonly updatedAt: Date;
 
+  @ApiProperty()
+  readonly userId: string;
+
+  @ApiProperty()
+  readonly postId: string;
+
   constructor() {
     this.id = randomUUID();
   }

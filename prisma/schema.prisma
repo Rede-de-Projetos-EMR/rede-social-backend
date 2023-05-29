@@ -66,8 +66,8 @@ model Comment {
   content   String
   User      User?    @relation(fields: [userId], references: [id])
   userId    String?
-  Posts     Post?    @relation(fields: [postsId], references: [id])
-  postsId   String?
+  Posts     Post?    @relation(fields: [postId], references: [id])
+  postId    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
