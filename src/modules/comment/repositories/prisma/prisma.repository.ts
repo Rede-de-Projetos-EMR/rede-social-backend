@@ -16,18 +16,34 @@ export class CommentPrismaRepository implements CommentRepository{
       data:  {
         ...comment,
         userId,
-        postsId: postId,
+        postId: postId,
       }
     });
 
     return newComment;
   }
-  async findAll(): Promise<[] | Comment[]> {
+  async findAll(): Promise<Comment[] | []> {
     return await this.prisma.comment.findMany();
   }
-  async findOne(id: string): Promise<Comment> {
+  async findOne(id: string): Promise<any> {
     const comment = await this.prisma.comment.findUnique({
-      where: {id}
+      where: { 
+        id,
+      },
+      select:{
+        content: true,
+        createdAt: true,
+        id: true,
+        postId: true,
+        updatedAt: true,
+        userId: true,
+        Posts: {
+          select:{
+            id: true,
+            userId: true,
+          }
+        }
+      }
     });
     return comment;
   }

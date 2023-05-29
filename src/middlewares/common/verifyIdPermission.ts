@@ -1,7 +1,6 @@
 import { ConflictException, Injectable, NestMiddleware } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
-import { IDataDecode } from "src/interfaces/decode";
-import jwt_decode from "jwt-decode";
+import { tokenToId } from "src/utils/tokenToId";
 
 @Injectable()
 export class VerifyIdPermission implements NestMiddleware {
@@ -12,9 +11,9 @@ export class VerifyIdPermission implements NestMiddleware {
       return next();
     }
 
-    const decode: IDataDecode = jwt_decode(token);
+    const decode: string = tokenToId(token);
 
-    if (decode.sub != req.params["0"]) {
+    if (decode != req.params["0"]) {
       throw new ConflictException("Você não pode acessar esses dados");
     }
 
