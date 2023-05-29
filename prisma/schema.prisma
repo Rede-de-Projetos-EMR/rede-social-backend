@@ -53,12 +53,12 @@ model Post {
 }
 
 model Reaction {
-  id      Int     @unique @default(autoincrement())
-  type    String
-  User    User?   @relation(fields: [userId], references: [id])
-  userId  String?
-  Posts   Post?   @relation(fields: [postsId], references: [id])
-  postsId String?
+  id     String  @unique @default(uuid())
+  type   String
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+  Post   Post?   @relation(fields: [postId], references: [id])
+  postId String?
 }
 
 model Comment {
