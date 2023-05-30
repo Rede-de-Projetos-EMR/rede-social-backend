@@ -1,4 +1,4 @@
-import { Injectable, NestMiddleware, ConflictException } from "@nestjs/common";
+import { Injectable, NestMiddleware, ConflictException, BadRequestException } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
 import { ReactionsRepository } from "src/modules/reactions/repositories/reactions.repository";
 import { tokenToId } from "src/utils/tokenToId";
@@ -16,6 +16,10 @@ export class NotReactedYet implements NestMiddleware {
 
     const userId = tokenToId(token);
     const postId = req.params.id;
+
+    if (!postId) {
+      throw new BadRequestException("Você não passou um id válido!");
+    }
 
     const findReaction = await this.reactionsRepository.findOne(userId, postId);
 
