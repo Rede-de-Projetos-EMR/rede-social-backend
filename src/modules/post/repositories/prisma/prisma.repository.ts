@@ -7,7 +7,7 @@ import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class PostPrismaRepository implements PostRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(userId: string, data: CreatePostDto): Promise<Post> {
     const post = new Post();
@@ -22,8 +22,14 @@ export class PostPrismaRepository implements PostRepository {
 
     return newPost;
   }
-  async findAll(): Promise<any[]> {
+
+  async findAll(page: string, limit: string): Promise<any[]> {
     const posts = await this.prisma.post.findMany({
+      take: parseInt(limit),
+      skip: parseInt(page) * parseInt(limit),
+      orderBy: {
+        createdAt: "desc"
+      },
       select: {
         id: true,
         title: true,
@@ -43,7 +49,7 @@ export class PostPrismaRepository implements PostRepository {
                 username: true,
                 avatarUrl: true,
               }
-            } 
+            }
           }
         },
         User: {

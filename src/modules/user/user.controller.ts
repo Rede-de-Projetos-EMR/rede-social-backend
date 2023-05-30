@@ -9,6 +9,7 @@ import {
   HttpCode,
   UseGuards,
   ParseUUIDPipe,
+  Query,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -39,8 +40,11 @@ export class UserController {
   @ApiOperation({ summary: "Listagem de usuários" })
   @ApiOkResponse({ type: UserEntity, isArray: true })
   @UseGuards(JwtAuthGuard)
-  findAll() {
-    return this.userService.findAll();
+  findAll(
+    @Query("page") page = "0",
+    @Query("limit") limit = "10"
+  ) {
+    return this.userService.findAll(page, limit);
   }
 
   @Get(":id")
