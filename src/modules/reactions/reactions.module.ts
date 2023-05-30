@@ -29,8 +29,8 @@ export class ReactionsModule {
     consumer
       .apply(VerifyPostId)
       .forRoutes(
-        { path: "reactions/*", method: RequestMethod.PATCH },
-        { path: "reactions/*", method: RequestMethod.DELETE }
+        { path: "reactions/*", method: RequestMethod.POST },
+        { path: "reactions/*", method: RequestMethod.GET }
       );
   }
 }
