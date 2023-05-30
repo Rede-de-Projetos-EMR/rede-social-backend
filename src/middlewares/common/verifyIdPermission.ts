@@ -13,8 +13,6 @@ export class VerifyIdPermission implements NestMiddleware {
 
     const decode: string = tokenToId(token);
 
-    console.log(req.params["0"], decode);
-
     if (decode != req.params["0"]) {
       throw new ConflictException("Você não pode acessar esses dados");
     }
