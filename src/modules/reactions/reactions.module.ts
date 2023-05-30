@@ -7,13 +7,18 @@ import { ReactionsPrismaRepository } from "./repositories/prisma/prisma.reposito
 import { AlreadyReacted } from "src/middlewares/reactions/alreadyReacted";
 import { NotReactedYet } from "src/middlewares/reactions/notReactedYet";
 import { FindPost } from "src/middlewares/post/findPost";
+import { PostRepository } from "../post/repositories/post.repository";
+import { PostPrismaRepository } from "../post/repositories/prisma/prisma.repository";
 
 @Module({
   controllers: [ReactionsController],
   providers: [ReactionsService, PrismaService, {
-    provide: ReactionsRepository,
-    useClass: ReactionsPrismaRepository
-  }]
+    provide: PostRepository,
+    useClass: PostPrismaRepository
+  }, {
+      provide: ReactionsRepository,
+      useClass: ReactionsPrismaRepository
+    }]
 })
 export class ReactionsModule {
   configure(consumer: MiddlewareConsumer) {
