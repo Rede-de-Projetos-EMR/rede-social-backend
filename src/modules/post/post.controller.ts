@@ -9,6 +9,7 @@ import {
   HttpCode,
   UseGuards,
   Headers,
+  ParseUUIDPipe,
 } from "@nestjs/common";
 import { Post as PostEntity } from "./entities/post.entity";
 import { PostService } from "./post.service";
@@ -49,7 +50,7 @@ export class PostController {
   @ApiOkResponse({ type: PostEntity })
   @ApiOperation({ summary: "Listagem de post com base no Id" })
   @UseGuards(JwtAuthGuard)
-  findOne(@Param("id") id: string) {
+  findOne(@Param("id", ParseUUIDPipe) id: string) {
     return this.postService.findOne(id);
   }
 
@@ -57,7 +58,7 @@ export class PostController {
   @ApiOperation({ summary: "Atualização de um post" })
   @ApiOkResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
-  update(@Param("id") id: string, @Body() updatePostDto: UpdatePostDto) {
+  update(@Param("id", ParseUUIDPipe) id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postService.update(id, updatePostDto);
   }
 
@@ -66,7 +67,7 @@ export class PostController {
   @ApiResponse({ description: "Sem retorno nesse método ;)" })
   @Delete(":id")
   @UseGuards(JwtAuthGuard)
-  remove(@Param("id") id: string) {
+  remove(@Param("id", ParseUUIDPipe) id: string) {
     return this.postService.remove(id);
   }
 }

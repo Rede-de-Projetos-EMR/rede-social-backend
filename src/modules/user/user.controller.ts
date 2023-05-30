@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   UseGuards,
+  ParseUUIDPipe,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -25,7 +26,7 @@ import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 @Controller("user")
 @ApiTags("Users")
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post()
   @ApiOperation({ summary: "Criação de um usuário" })
@@ -46,7 +47,7 @@ export class UserController {
   @ApiOperation({ summary: "Listagem de usuário com base no Id" })
   @ApiOkResponse({ type: UserEntity })
   @UseGuards(JwtAuthGuard)
-  findOne(@Param("id") id: string) {
+  findOne(@Param("id", ParseUUIDPipe) id: string) {
     return this.userService.findOne(id);
   }
 
@@ -54,7 +55,7 @@ export class UserController {
   @ApiOperation({ summary: "Atualização de um usuário" })
   @ApiOkResponse({ type: UserEntity })
   @UseGuards(JwtAuthGuard)
-  update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param("id", ParseUUIDPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
@@ -63,7 +64,7 @@ export class UserController {
   @ApiOperation({ summary: "Deleção de um usuário" })
   @ApiResponse({ description: "Sem retorno nesse método ;)" })
   @UseGuards(JwtAuthGuard)
-  remove(@Param("id") id: string) {
+  remove(@Param("id", ParseUUIDPipe) id: string) {
     return this.userService.remove(id);
   }
 }

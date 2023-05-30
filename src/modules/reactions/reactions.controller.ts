@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Headers, HttpCode } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Headers,
+  HttpCode,
+  ParseUUIDPipe
+} from "@nestjs/common";
 import { ReactionsService } from "./reactions.service";
 import { CreateReactionDto } from "./dto/create-reaction.dto";
 import { UpdateReactionDto } from "./dto/update-reaction.dto";
@@ -11,26 +23,26 @@ export class ReactionsController {
 
   @Post(":id")
   @UseGuards(JwtAuthGuard)
-  create(@Param("id") id: string, @Headers() user: IHeadersUser, @Body() createReactionDto: CreateReactionDto) {
+  create(@Param("id", ParseUUIDPipe) id: string, @Headers() user: IHeadersUser, @Body() createReactionDto: CreateReactionDto) {
     return this.reactionsService.create(user.authorization?.split(" ")[1], id, createReactionDto);
   }
 
   @Get(":id")
   @UseGuards(JwtAuthGuard)
-  findOne(@Param("id") id: string) {
+  findOne(@Param("id", ParseUUIDPipe) id: string) {
     return this.reactionsService.findByPostId(id);
   }
 
   @Patch(":id")
   @UseGuards(JwtAuthGuard)
-  update(@Param("id") id: string, @Body() updateReactionDto: UpdateReactionDto) {
+  update(@Param("id", ParseUUIDPipe) id: string, @Body() updateReactionDto: UpdateReactionDto) {
     return this.reactionsService.update(id, updateReactionDto);
   }
 
   @HttpCode(204)
   @Delete(":id")
   @UseGuards(JwtAuthGuard)
-  remove(@Param("id") id: string) {
+  remove(@Param("id", ParseUUIDPipe) id: string) {
     return this.reactionsService.remove(id);
   }
 }
