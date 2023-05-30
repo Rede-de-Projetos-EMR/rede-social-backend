@@ -6,6 +6,7 @@ import { ReactionsRepository } from "./repositories/reactions.repository";
 import { ReactionsPrismaRepository } from "./repositories/prisma/prisma.repository";
 import { AlreadyReacted } from "src/middlewares/reactions/alreadyReacted";
 import { NotReactedYet } from "src/middlewares/reactions/notReactedYet";
+import { VerifyPostId } from "src/middlewares/reactions/verifyPostId";
 
 @Module({
   controllers: [ReactionsController],
@@ -21,6 +22,12 @@ export class ReactionsModule {
       .forRoutes({ path: "reactions/*", method: RequestMethod.POST });
     consumer
       .apply(NotReactedYet)
+      .forRoutes(
+        { path: "reactions/*", method: RequestMethod.PATCH },
+        { path: "reactions/*", method: RequestMethod.DELETE }
+      );
+    consumer
+      .apply(VerifyPostId)
       .forRoutes(
         { path: "reactions/*", method: RequestMethod.PATCH },
         { path: "reactions/*", method: RequestMethod.DELETE }
