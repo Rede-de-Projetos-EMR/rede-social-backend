@@ -6,14 +6,19 @@ import { ReactionsRepository } from "./repositories/reactions.repository";
 import { ReactionsPrismaRepository } from "./repositories/prisma/prisma.repository";
 import { AlreadyReacted } from "src/middlewares/reactions/alreadyReacted";
 import { NotReactedYet } from "src/middlewares/reactions/notReactedYet";
-import { VerifyPostId } from "src/middlewares/reactions/verifyPostId";
+import { FindPost } from "src/middlewares/post/findPost";
+import { PostRepository } from "../post/repositories/post.repository";
+import { PostPrismaRepository } from "../post/repositories/prisma/prisma.repository";
 
 @Module({
   controllers: [ReactionsController],
   providers: [ReactionsService, PrismaService, {
-    provide: ReactionsRepository,
-    useClass: ReactionsPrismaRepository
-  }]
+    provide: PostRepository,
+    useClass: PostPrismaRepository
+  }, {
+      provide: ReactionsRepository,
+      useClass: ReactionsPrismaRepository
+    }]
 })
 export class ReactionsModule {
   configure(consumer: MiddlewareConsumer) {
@@ -27,7 +32,7 @@ export class ReactionsModule {
         { path: "reactions/*", method: RequestMethod.DELETE }
       );
     consumer
-      .apply(VerifyPostId)
+      .apply(FindPost)
       .forRoutes(
         { path: "reactions/*", method: RequestMethod.POST },
         { path: "reactions/*", method: RequestMethod.GET }

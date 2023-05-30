@@ -15,7 +15,7 @@ export class NotReactedYet implements NestMiddleware {
     }
 
     const userId = tokenToId(token);
-    const postId = req.params.id;
+    const postId = req.params["0"];
 
     if (!postId) {
       throw new BadRequestException("Você não passou um id válido!");
