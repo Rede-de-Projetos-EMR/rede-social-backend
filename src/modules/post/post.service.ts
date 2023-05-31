@@ -16,8 +16,8 @@ export class PostService {
     return newPost;
   }
 
-  async findAll() {
-    const posts = await this.postRepository.findAll();
+  async findAll(page: string, limit: string) {
+    const posts = await this.postRepository.findAll(page, limit);
 
     return posts;
   }
