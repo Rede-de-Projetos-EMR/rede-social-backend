@@ -25,8 +25,6 @@ export class UniqueTitleVerification implements NestMiddleware {
 
     const findPost = await this.postRepository.findByTitle(decode.sub, title);
 
-    console.log(findPost);
-
     if (findPost) {
       throw new ConflictException("Você já criou um post com esse título");
     }
