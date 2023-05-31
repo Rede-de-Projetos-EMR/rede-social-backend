@@ -10,27 +10,29 @@ import { VerifyUserIdPermission } from "src/middlewares/post/verifyUserIdPermiss
 
 @Module({
   controllers: [PostController],
-  providers: [PostService, PrismaService, {
-    provide: PostRepository,
-    useClass: PostPrismaRepository
-  }]
+  providers: [
+    PostService,
+    PrismaService,
+    {
+      provide: PostRepository,
+      useClass: PostPrismaRepository,
+    },
+  ],
 })
 export class PostModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(FindPost)
-      .forRoutes("post/*");
+    consumer.apply(FindPost).forRoutes("post/*");
     consumer
       .apply(VerifyUserIdPermission)
       .forRoutes(
         { path: "post/*", method: RequestMethod.PATCH },
-        { path: "post/*", method: RequestMethod.DELETE }
+        { path: "post/*", method: RequestMethod.DELETE },
       );
     consumer
       .apply(UniqueTitleVerification)
       .forRoutes(
         { path: "post", method: RequestMethod.POST },
-        { path: "post/*", method: RequestMethod.PATCH }
+        { path: "post/*", method: RequestMethod.PATCH },
       );
   }
 }
