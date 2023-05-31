@@ -25,7 +25,6 @@ import {
 } from "@nestjs/swagger";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { IHeadersUser } from "src/interfaces/headersUser";
-import console from "console";
 
 @Controller("post")
 @ApiTags("Posts")
