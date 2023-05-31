@@ -5,7 +5,7 @@ import { Post } from "../entities/post.entity";
 
 export abstract class PostRepository {
   abstract create(userId: string, data: CreatePostDto): Promise<Post>;
-  abstract findAll(): Promise<IPostWithUser[]>;
+  abstract findAll(page: string, limit: string): Promise<IPostWithUser[]>;
   abstract findOne(id: string): Promise<IPostWithUser>;
   abstract findByTitle(id: string, title: string): Promise<Post | null>;
   abstract update(id: string, data: UpdatePostDto): Promise<Post>;

@@ -10,6 +10,7 @@ import {
   UseGuards,
   Headers,
   ParseUUIDPipe,
+  Query,
 } from "@nestjs/common";
 import { Post as PostEntity } from "./entities/post.entity";
 import { PostService } from "./post.service";
@@ -42,8 +43,11 @@ export class PostController {
   @ApiOkResponse({ type: PostEntity, isArray: true })
   @ApiOperation({ summary: "Listagem de posts" })
   @UseGuards(JwtAuthGuard)
-  findAll() {
-    return this.postService.findAll();
+  findAll(
+    @Query("page") page = "0",
+    @Query("limit") limit = "10"
+  ) {
+    return this.postService.findAll(page, limit);
   }
 
   @Get(":id")
