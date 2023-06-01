@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NestMiddleware } from "@nestjs/common";
+import { Injectable, NestMiddleware, ForbiddenException } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
 import { tokenToId } from "src/utils/tokenToId";
 
@@ -14,7 +14,7 @@ export class VerifyIdPermission implements NestMiddleware {
     const decode: string = tokenToId(token);
 
     if (decode != req.params["0"]) {
-      throw new ConflictException("Você não pode acessar esses dados");
+      throw new ForbiddenException("Você não pode acessar esses dados");
     }
 
     next();
