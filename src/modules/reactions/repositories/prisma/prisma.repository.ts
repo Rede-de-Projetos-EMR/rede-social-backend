@@ -7,9 +7,13 @@ import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class ReactionsPrismaRepository implements ReactionsRepository {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
-  async create(postId: string, userId: string, data: CreateReactionDto): Promise<any> {
+  async create(
+    postId: string,
+    userId: string,
+    data: CreateReactionDto,
+  ): Promise<any> {
     const reaction = new Reaction();
     Object.assign(reaction, { ...data });
 
@@ -17,8 +21,8 @@ export class ReactionsPrismaRepository implements ReactionsRepository {
       data: {
         ...reaction,
         postId,
-        userId
-      }
+        userId,
+      },
     });
 
     return newReaction;
@@ -27,8 +31,8 @@ export class ReactionsPrismaRepository implements ReactionsRepository {
   async findByPostId(postId: string): Promise<any[]> {
     const findReactions = await this.prisma.reaction.findMany({
       where: {
-        postId
-      }
+        postId,
+      },
     });
 
     return findReactions;
@@ -39,7 +43,7 @@ export class ReactionsPrismaRepository implements ReactionsRepository {
       where: {
         userId,
         postId,
-      }
+      },
     });
 
     return findReaction;
@@ -48,8 +52,16 @@ export class ReactionsPrismaRepository implements ReactionsRepository {
   async findByReactionId(reactionId: string): Promise<any> {
     const findReaction = await this.prisma.reaction.findUnique({
       where: {
-        id: reactionId
-      }
+        id: reactionId,
+      },
+      select: {
+        id: true,
+        User: {
+          select: {
+            id: true,
+          },
+        },
+      },
     });
 
     return findReaction;
@@ -60,7 +72,7 @@ export class ReactionsPrismaRepository implements ReactionsRepository {
       where: {
         id: reactionId,
       },
-      data
+      data,
     });
 
     return updateReaction;
@@ -69,8 +81,8 @@ export class ReactionsPrismaRepository implements ReactionsRepository {
   async remove(reactionId: string): Promise<void> {
     await this.prisma.reaction.delete({
       where: {
-        id: reactionId
-      }
+        id: reactionId,
+      },
     });
   }
 }
