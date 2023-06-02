@@ -3,6 +3,7 @@ import { FollowingRepository } from "../following.repository";
 import { CreateFollowingDto } from "../../dto/create-following.dto";
 import { Following } from "../../entities/following.entity";
 import { PrismaService } from "src/prisma/prisma.service";
+import { IFollow } from "src/interfaces/follow";
 
 @Injectable()
 export class FollowingPrismaRepository implements FollowingRepository {
@@ -59,7 +60,7 @@ export class FollowingPrismaRepository implements FollowingRepository {
     return follow;
   }
 
-  async findOne(id: string): Promise<Following> {
+  async findOne(id: string): Promise<IFollow> {
     const follow = await this.prisma.following.findUnique({
       where: { id },
     });
