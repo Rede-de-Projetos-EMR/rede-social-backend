@@ -1,3 +1,4 @@
+import { IFollow } from "src/interfaces/follow";
 import { CreateFollowingDto } from "../dto/create-following.dto";
 import { Following } from "../entities/following.entity";
 
@@ -13,5 +14,5 @@ export abstract class FollowingRepository {
     followingId: string,
     followerId: string,
   ): Promise<Following>;
-  abstract findOne(id: string): Promise<Following>;
+  abstract findOne(id: string): Promise<IFollow>;
 }
