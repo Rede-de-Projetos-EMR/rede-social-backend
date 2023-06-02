@@ -36,7 +36,7 @@ export class UserModule implements NestModule {
     consumer.apply(VerifyUserExists).forRoutes("user/*");
     consumer
       .apply(VerifyIdPermission)
-      .exclude({ path: "user", method: RequestMethod.GET }, "user/(.*)")
+      .exclude({ path: "user/:id", method: RequestMethod.GET })
       .forRoutes("user/*");
   }
 }

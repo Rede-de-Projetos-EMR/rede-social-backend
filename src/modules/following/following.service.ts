@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
@@ -47,11 +48,16 @@ export class FollowingService {
     return followings;
   }
 
-  async remove(id: string) {
+  async remove(id: string, token: string) {
+    const userId = tokenToId(token);
     const follow = await this.followingRepository.findOne(id);
 
     if (!follow) {
       throw new NotFoundException("Esse vínculo de seguidor não existe");
+    }
+
+    if (userId !== follow.followerId) {
+      throw new ForbiddenException("Você não pode acessar esses dados");
     }
 
     await this.followingRepository.remove(id);

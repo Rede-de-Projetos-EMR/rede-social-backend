@@ -8,6 +8,7 @@ import {
   UseGuards,
   HttpCode,
   Headers,
+  ParseUUIDPipe,
 } from "@nestjs/common";
 import { FollowingService } from "./following.service";
 import { CreateFollowingDto } from "./dto/create-following.dto";
@@ -66,7 +67,10 @@ export class FollowingController {
   @ApiOperation({ summary: "Deleção do vínculo de seguidor" })
   @ApiResponse({ description: "Sem retorno nesse método ;)" })
   @UseGuards(JwtAuthGuard)
-  remove(@Param("id") id: string) {
-    return this.followingService.remove(id);
+  remove(
+    @Param("id", ParseUUIDPipe) id: string,
+    @Headers() user: IHeadersUser,
+  ) {
+    return this.followingService.remove(id, user.authorization?.split(" ")[1]);
   }
 }
