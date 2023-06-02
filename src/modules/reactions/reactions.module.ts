@@ -5,10 +5,11 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { ReactionsRepository } from "./repositories/reactions.repository";
 import { ReactionsPrismaRepository } from "./repositories/prisma/prisma.repository";
 import { AlreadyReacted } from "src/middlewares/reactions/alreadyReacted";
-import { NotReactedYet } from "src/middlewares/reactions/notReactedYet";
+import { VerifyIfReactionExists } from "src/middlewares/reactions/verifyIfReactionExists";
 import { FindPost } from "src/middlewares/post/findPost";
 import { PostRepository } from "../post/repositories/post.repository";
 import { PostPrismaRepository } from "../post/repositories/prisma/prisma.repository";
+import { VerifyUserPermission } from "src/middlewares/reactions/verifyUserPermission";
 
 @Module({
   controllers: [ReactionsController],
@@ -26,7 +27,13 @@ export class ReactionsModule {
       .apply(AlreadyReacted)
       .forRoutes({ path: "reactions/*", method: RequestMethod.POST });
     consumer
-      .apply(NotReactedYet)
+      .apply(VerifyIfReactionExists)
+      .forRoutes(
+        { path: "reactions/*", method: RequestMethod.PATCH },
+        { path: "reactions/*", method: RequestMethod.DELETE }
+      );
+    consumer
+      .apply(VerifyUserPermission)
       .forRoutes(
         { path: "reactions/*", method: RequestMethod.PATCH },
         { path: "reactions/*", method: RequestMethod.DELETE }
