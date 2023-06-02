@@ -26,23 +26,12 @@ export class CommentPrismaRepository implements CommentRepository{
     return await this.prisma.comment.findMany();
   }
   async findOne(id: string): Promise<any> {
-    const comment = await this.prisma.comment.findUnique({
+    const comment = await this.prisma.post.findUnique({
       where: { 
         id,
       },
-      select:{
-        content: true,
-        createdAt: true,
-        id: true,
-        postId: true,
-        updatedAt: true,
-        userId: true,
-        Posts: {
-          select:{
-            id: true,
-            userId: true,
-          }
-        }
+      select: {
+        comments: true
       }
     });
     return comment;
